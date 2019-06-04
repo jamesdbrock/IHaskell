@@ -52,7 +52,7 @@ jupyter labextension install jupyterlab-ihaskell
 Run Jupyter.
 
 ```bash
-stack exec jupyter -- notebook
+stack exec -- jupyter notebook
 ```
 
 
@@ -82,7 +82,7 @@ If you have Homebrew installed to a custom location, you'd need to specify `--ex
 Run Jupyter.
 
 ```bash
-stack exec jupyter -- notebook
+stack exec -- jupyter notebook
 ```
 
 _Tested on macOS Sierra (10.12.6)_
@@ -150,15 +150,33 @@ command:
 docker build -t ihaskell-dev docker
 ```
 
+Install Jupyter. Here are some options, choose one or many.
+
+* Classic Notebook and its minimial requirements.
+  ```bash
+  stack --docker exec -- pip3 install --user notebook
+  ```
+
+* Classic Notebook, full installation.
+  ```bash
+  stack --docker exec -- pip3 install --user jupyter
+  ```
+
+* Classic Notebook, with extravagent extensions.
+  ```bash
+  stack --docker exec -- pip3 install --user jupyter_contrib_nbextensions
+  ```
+
+* JupyterLab, full installation.
+
+  ```bash
+  stack --docker exec -- pip3 install --user jupyterlab
+  ```
+
 Install the `ghc` version specified by the Stack `resolver`.
 
 ```bash
 stack --docker setup
-```
-
-Install Jupyter and all of its requirements.
-```bash
-stack --docker exec pip3 -- install jupyter
 ```
 
 Build IHaskell and all of its packages.
@@ -173,13 +191,12 @@ Direct IHaskell to register itself as a Jupyter kernel.
 stack --docker exec ihaskell -- install --stack
 ```
 
-Optionally, install JupyterLab and the IHaskell JupyterLab extension for
-syntax highlighting. See the
+Optionally, install the IHaskell JupyterLab extension for
+syntax highlighting. Requires JupyterLab. See the
 [`ihaskell_labextension/README.md`](ihaskell_labextension/README.md).
 
 ```bash
-stack --docker exec pip3 -- install jupyterlab
-stack --docker exec bash -- -c 'cd ihaskell_labextension;npm install;npm run build;jupyter labextension link .'
+stack --docker exec -- bash -c 'cd ihaskell_labextension;npm install;npm run build;jupyter labextension link .'
 ```
 
 Run the Jupyter notebook, with security disabled for testing, listening on all interfaces.
