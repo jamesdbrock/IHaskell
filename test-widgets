@@ -5,4 +5,6 @@ stack --docker exec jupyter -- nbextension enable --py widgetsnbextension
 stack --docker setup
 stack --docker install
 stack --docker exec ihaskell -- install --stack
-stack --docker exec jupyter -- notebook --NotebookApp.token='' ihaskell-display/ihaskell-widgets/Examples
+# stack --docker exec jupyter -- notebook --NotebookApp.token='' ihaskell-display/ihaskell-widgets/Examples
+stack --docker exec jupyter -- notebook --NotebookApp.token='' --no-browser --NotebookApp.ip=0.0.0.0 ihaskell-display/ihaskell-widgets/Examples
+
