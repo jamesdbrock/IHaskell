@@ -1,0 +1,6 @@
+set -ex
+docker build -t ihaskell-dev docker
+# stack --docker exec pip3 -- install --user -r requirements-widget.txt
+stack --docker exec pip3 -- install --user -r requirements.txt
+stack --docker exec jupyter -- nbextension enable --py widgetsnbextension
+stack --docker setup
