@@ -115,7 +115,8 @@ type (a :++ b) = a ++ b
 
 -- Classes from IPython's widget hierarchy. Defined as such to reduce code duplication.
 type WidgetClass = ['S.ViewModule, 'S.ViewModuleVersion, 'S.ViewName, 'S.ModelModule, 'S.ModelModuleVersion, 'S.ModelName,
-  'S.MsgThrottle, 'S.Version, 'S.DisplayHandler]
+  -- 'S.MsgThrottle,
+  'S.Version, 'S.DisplayHandler]
 
 type DOMWidgetClass = WidgetClass :++ ['S.Visible, 'S.CSS, 'S.DOMClasses, 'S.Width, 'S.Height, 'S.Padding,
   'S.Margin, 'S.Color, 'S.BackgroundColor, 'S.BorderColor, 'S.BorderWidth,
@@ -161,7 +162,7 @@ type family FieldType (f :: Field) :: * where
         FieldType 'S.ModelModule = Text
         FieldType 'S.ModelModuleVersion = Text
         FieldType 'S.ModelName = Text
-        FieldType 'S.MsgThrottle = Integer
+        -- FieldType 'S.MsgThrottle = Integer
         FieldType 'S.Version = Integer
         FieldType 'S.DisplayHandler = IO ()
         FieldType 'S.Visible = Bool
@@ -392,8 +393,8 @@ instance ToPairs (Attr 'S.ModelModuleVersion) where
 instance ToPairs (Attr 'S.ModelName) where
   toPairs x = ["_model_name" .= toJSON x]
 
-instance ToPairs (Attr 'S.MsgThrottle) where
-  toPairs x = ["msg_throttle" .= toJSON x]
+-- instance ToPairs (Attr 'S.MsgThrottle) where
+--   toPairs x = ["msg_throttle" .= toJSON x]
 
 instance ToPairs (Attr 'S.Version) where
   toPairs x = ["version" .= toJSON x]
@@ -657,7 +658,7 @@ defaultWidget viewName modelName = (ViewModule =:: "@jupyter-widgets/controls") 
                                    :& (ModelModule =:: "@jupyter-widgets/controls")
                                    :& (ModelModuleVersion =:: "1.5.0")
                                    :& (ModelName =:: modelName)
-                                   :& (MsgThrottle =:+ 3)
+                                   -- :& (MsgThrottle =:+ 3)
                                    :& (Version =:: 0)
                                    :& (DisplayHandler =:: return ())
                                    :& RNil

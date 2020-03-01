@@ -23,7 +23,7 @@ import           System.IO.Unsafe (unsafePerformIO)
 
 import           IHaskell.Display
 import           IHaskell.Eval.Util (unfoldM)
-import           IHaskell.IPython.Types (showMessageType)
+import           IHaskell.IPython.Types (showMessageType, Metadata(..))
 import           IHaskell.Types
 
 -- All comm_open messages go here
@@ -146,7 +146,12 @@ handleMessage send replyHeader state msg = do
 
     DispMsg widget disp -> do
       dispHeader <- dupHeader replyHeader DisplayDataMessage
-      let dmsg = WidgetDisplay dispHeader $ unwrap disp
+      -- The version of the widget messaging protocol.
+      -- https://github.com/jupyter-widgets/ipywidgets/blob/master/packages/schema/messages.md
+      let Object widgetVersion = object ["version" .= str "2.0.0" ]
+      let dmsg = WidgetDisplay
+                    (dispHeader { mhMetadata = Metadata widgetVersion})
+                    $ unwrap disp
       sendMessage widget (toJSON $ CustomContent $ toJSON dmsg)
 
     ClrOutput widget w -> do
@@ -186,6 +191,12 @@ instance ToJSON WidgetClear where
     let clrVal = toJSON $ ClearOutput replyHeader w
     in toJSON $ IPythonMessage replyHeader clrVal ClearOutputMessage
 
+-- This IPythonMessage type is an alternative to the Message type in
+-- ipython-kernel/src/IHaskell/IPython/Types.hs
+-- The IPythonMessage is only used for widget comm messages.
+-- I guess Sumit felt that extending Andrew's Message sum type for all of the
+-- custom widget comm messages wasn't a good approach, and maybe he was right.
+-- The Expression Problem again. -jamesdbrock
 data IPythonMessage = IPythonMessage MessageHeader Value MessageType
 
 instance ToJSON IPythonMessage where
@@ -193,7 +204,10 @@ instance ToJSON IPythonMessage where
     object
       [ "header" .= replyHeader
       , "parent_header" .= str ""
-      , "metadata" .= str "{}"
+        , "metadata" .= str "{}"
+        -- The version of the widget messaging protocol.
+        -- https://github.com/jupyter-widgets/ipywidgets/blob/master/packages/schema/messages.md
+        -- , "metadata" .= str "{ \"version\": \"2.0.0\" }"
       , "content" .= val
       , "msg_type" .= showMessageType mtype
       ]

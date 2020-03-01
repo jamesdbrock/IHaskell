@@ -30,7 +30,7 @@ singletons
              | ModelModule
              | ModelModuleVersion
              | ModelName
-             | MsgThrottle
+             -- | MsgThrottle
              | Version
              | DisplayHandler
              | Visible

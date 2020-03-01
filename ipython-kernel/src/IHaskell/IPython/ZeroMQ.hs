@@ -309,7 +309,7 @@ sendMessage debug hmackey sock msg = do
   sendPiece signature
   sendPiece headStr
   sendPiece parentHeaderStr
-  sendPiece metadata
+  sendPiece metadataStr
 
   -- If there are no mhBuffers, then conclude transmission with content.
   case mhBuffers hdr of
@@ -332,7 +332,7 @@ sendMessage debug hmackey sock msg = do
 
     -- Signature for the message using HMAC SHA-256.
     signature :: ByteString
-    signature = hmac $ headStr <> parentHeaderStr <> metadata <> content
+    signature = hmac $ headStr <> parentHeaderStr <> metadataStr <> content
 
     -- Compute the HMAC SHA-256 signature of a bytestring message.
     hmac :: ByteString -> ByteString
@@ -344,6 +344,7 @@ sendMessage debug hmackey sock msg = do
     hdr = header msg
     parentHeaderStr = maybe "{}" encodeStrict $ mhParentHeader hdr
     idents = mhIdentifiers hdr
-    metadata = "{ \"version\": \"2.0.0\" }"
+    -- metadataStr = "{\"version\": \"2.0.0\"}"
+    metadataStr = encodeStrict $ mhMetadata hdr
     content = encodeStrict msg
     headStr = encodeStrict hdr

@@ -780,6 +780,7 @@ data MimeType = PlainText
               | MimeVega
               | MimeVegalite
               | MimeVdom
+              -- | MimeWidgetView
               | MimeCustom Text
   deriving (Eq, Typeable, Generic)
 
@@ -808,6 +809,7 @@ instance Show MimeType where
   show MimeVega = "application/vnd.vega.v2+json"
   show MimeVegalite = "application/vnd.vegalite.v2+json"
   show MimeVdom = "application/vdom.v1+json"
+  -- show MimeWidgetView = "application/vnd.jupyter.widget-view+json"
   show (MimeCustom custom) = Text.unpack custom
 
 instance Read MimeType where
@@ -825,6 +827,7 @@ instance Read MimeType where
   readsPrec _ "application/vnd.vega.v2+json" = [(MimeVega, "")]
   readsPrec _ "application/vnd.vegalite.v1+json" = [(MimeVegalite, "")]
   readsPrec _ "application/vdom.v1+json" = [(MimeVdom, "")]
+  -- readsPrec _ "application/vnd.jupyter.widget-view+json" = [(MimeWidgetView, "")]
   readsPrec _ t = [(MimeCustom (Text.pack t), "")]
 
 -- | Convert a MIME type and value into a JSON dictionary pair.

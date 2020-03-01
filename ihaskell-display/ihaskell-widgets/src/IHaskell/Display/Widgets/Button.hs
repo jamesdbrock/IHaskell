@@ -4,6 +4,7 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 
 {-# OPTIONS_GHC -fno-warn-orphans  #-}
+{-# OPTIONS_GHC -fno-warn-unused-imports  #-}
 
 module IHaskell.Display.Widgets.Button
   ( -- * The Button Widget
@@ -61,6 +62,7 @@ mkButton = do
 instance IHaskellDisplay Button where
   display b = do
     widgetSendView b
+                -- TODO move this
     return $ Display
       [ DisplayData
           (MimeCustom "application/vnd.jupyter.widget-view+json")
