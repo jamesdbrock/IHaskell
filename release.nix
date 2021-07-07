@@ -91,6 +91,7 @@ nixpkgs.buildEnv {
   '';
 
   passthru = {
+    inherit nixpkgs;
     inherit haskellPackages;
     inherit ihaskellEnv;
     inherit jupyterlab;

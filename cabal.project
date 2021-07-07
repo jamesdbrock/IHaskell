@@ -12,3 +12,31 @@ packages: .
           ./ihaskell-display/ihaskell-plot
           ./ihaskell-display/ihaskell-static-canvas
           ./ihaskell-display/ihaskell-widgets
+
+-- allow-newer: diagrams-cairo:base,
+--              diagrams-cairo:diagrams-core,
+--              diagrams:diagrams-core,
+--              diagrams-contrib:base,
+--              diagrams-contrib:diagrams-core,
+--              diagrams:diagrams-contrib
+
+-- https://cabal.readthedocs.io/en/3.4/cabal-project.html#cfg-field-allow-newer
+allow-newer:
+  diagrams:*,
+  diagrams-cairo:*,
+  diagrams-core:*,
+  diagrams-contrib:*,
+  force-layout:*,
+  static-canvas:*,
+
+  cryptohash-sha1:*,
+  cryptohash-md5:*,
+  glib:*,
+  pango:*,
+  cairo:*
+
+
+
+-- allow-older: singletons-base:*,
+--              singletons-th:*
+
