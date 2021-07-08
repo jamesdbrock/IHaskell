@@ -110,7 +110,10 @@ library
 
 					 -- The singletons package version is locked to the compiler
 					 -- so let cabal choose the right one.
-                     , singletons < 3.0.0
+                     , singletons -any
+
+  if impl (ghc >= 9.0)
+    build-depends:     singletons-base -any
 
   -- Directories containing source files.
   hs-source-dirs:      src
